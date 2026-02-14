@@ -1,141 +1,227 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-<title>Dear Valentine?</title>
-  
-<link rel="icon" href="data:image/svg+xml,
-<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'>
-  <text y='0.9em' font-size='105'>💌</text>
-</svg>">
-<link rel="apple-touch-icon" href="apple-touch-icon.png">
-<link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Special+Elite&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dear Valentine?</title>
 
-<style>
-  body {
-    margin: 0;
-    font-family: "Comic Sans MS", "Chalkboard SE", cursive;
-    background: #ffd6e7;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    text-align: center;
-    overflow: auto;
-  }
 
-  .container {
-    padding: 20px;
-  }
+  <link rel="icon" href="data:image/svg+xml,
+  <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'>
+    <text y='0.9em' font-size='105'>💌</text>
+  </svg>">
+<!--  <link rel="apple-touch-icon" href="apple-touch-icon.png">-->
+  <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Special+Elite&display=swap" rel="stylesheet">
 
-  h1 {
-    color: #ff4d88;
-    font-size: 24px;
-  }
+  <style>
+    body {
+      margin: 0;
+      font-family: "Comic Sans MS", "Chalkboard SE", cursive;
+      background: #ffd6e7;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      text-align: center;
+      overflow: auto;
+    }
 
-  img {
-    width: 160px;
-    margin: 20px 0;
-  }
+    .container {
+      padding: 20px;
+    }
 
-  button {
-    padding: 12px 24px;
-    margin: 10px;
-    font-size: 18px;
-    border: none;
-    border-radius: 20px;
-    cursor: pointer;
-    transition: 0.3s;
-  }
+    h1 {
+      color: #ff4d88;
+      font-size: 24px;
+    }
 
-  .yes {
-    background: #ff4d88;
-    color: white;
-  }
+    img {
+      width: 160px;
+      margin: 20px 0;
+    }
 
-  .no {
-    background: white;
-    color: #ff4d88;
-    position: relative;
-  }
+    button {
+      padding: 12px 24px;
+      margin: 10px;
+      font-size: 18px;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
 
-  .screen {
-    display: none;
-  }
+    .yes {
+      background: #ff4d88;
+      color: white;
+    }
 
-  .screen.active {
-    display: block;
-  }
+    .no {
+      background: white;
+      color: #ff4d88;
+      position: relative;
+    }
 
-  .active {
-    display: block;
-  }
+    .screen {
+      display: none;
+    }
 
-  #poem {
-    font-family: "Special Elite", monospace;
-  }
-</style>
+    .screen.active {
+      display: block;
+    }
+
+    .active {
+      display: block;
+    }
+
+    #poem {
+      font-family: "Special Elite", monospace;
+    }
+
+    /* Happiness meter */
+    .meter {
+      max-width: 280px;
+      max-width: 280px;
+      margin: 0 auto 18px;
+    }
+
+    .meter-track {
+      position: relative;
+      height: 18px;
+      border-radius: 999px;
+      overflow: visible;
+    }
+
+    .meter-clip {
+      height: 18px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.6);
+      overflow: hidden;       /* clip ONLY the fill, not the emoji */
+      box-shadow: inset 0 0 0 2px rgba(178, 24, 74, 0.15);
+    }
+
+    .meter-fill {
+      height: 100%;
+      width: 0%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #ff9ac2, #ff4d88, #b2184a);
+      transition: width 1.2s ease-in-out;
+    }
+
+    .meter-emoji {
+      position: absolute;
+      top: 50%;
+      left: 0%;
+      transform: translate(-10px, -52%);
+      font-size: 26px;
+      transition: left 1.2s ease-in-out;
+      filter: drop-shadow(0 2px 2px rgba(0,0,0,0.15));
+      pointer-events: none;
+    }
+
+    .meter-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      margin-top: 6px;
+      color: #b2184a;
+      opacity: 0.9;
+    }
+  </style>
 </head>
 
 <body>
-<!-- SCREEN 1 -->
-<div class="container screen active" id="screen1">
-  <h1>Will you be my Valentine? 💕</h1>
 
-  <!-- teddy -->
-  <img src="https://cdn-icons-png.flaticon.com/512/616/616408.png">
+  <!-- SCREEN 1 -->
+  <div class="container screen active" id="screen1">
+    <h1>Will you be my Valentine? 💕</h1>
 
-  <div>
-    <button class="yes" onclick="goNext()">Yes 💖</button>
-    <button class="no" id="noBtn">No 😤</button>
+    <!-- teddy -->
+    <img src="https://cdn-icons-png.flaticon.com/512/616/616408.png" alt="teddy">
+
+    <div>
+      <button class="yes" onclick="goNext()">Yes 💖</button>
+      <button class="no" id="noBtn">No 😤</button>
+    </div>
   </div>
-</div>
 
-<!-- SCREEN 2 -->
-<div class="container screen" id="screen2">
-  <h1>YAYYYYY 💝</h1>
-  <p>You have no idea how happy you just made me 🥰</p>
+  <!-- SCREEN 2 -->
+  <div class="container screen" id="screen2">
+    <h1>💝 YAYYYYY</h1>
+    <p>You have no idea how happy you just made me</p>
 
-  <!-- Typewriter poem -->
-  <p id="poem" style="margin-top:16px; color:#b2184a; font-size:18px; line-height:1.5; white-space:pre-wrap;"></p>
-</div>
+    <div class="meter">
+      <div class="meter-track">
+        <div class="meter-clip">
+          <div class="meter-fill" id="meterFill"></div>
+        </div>
+        <div class="meter-emoji" id="meterEmoji">🥰</div>
+      </div>
+      <div class="meter-labels">
+        <span>ily</span>
+        <span>ily 3000</span>
+      </div>
+    </div>
 
-<script>
-const noBtn = document.getElementById("noBtn");
+    <!-- Typewriter poem -->
+    <p id="poem" style="margin-top:16px; color:#b2184a; font-size:18px; line-height:1.5; white-space:pre-wrap;"></p>
+  </div>
 
-noBtn.addEventListener("click", moveButton);
+  <script>
+    const noBtn = document.getElementById("noBtn");
 
-function moveButton() {
-  noBtn.style.position = "absolute";
+    noBtn.addEventListener("click", moveButton);
 
-  const x = Math.random() * (window.innerWidth - 100);
-  const y = Math.random() * (window.innerHeight - 50);
-  noBtn.style.left = x + "px";
-  noBtn.style.top = y + "px";
-}
+    function moveButton() {
+      noBtn.style.position = "absolute";
 
-function goNext() {
-  document.getElementById("screen1").classList.remove("active");
-  document.getElementById("screen2").classList.add("active");
+      const x = Math.random() * (window.innerWidth - 100);
+      const y = Math.random() * (window.innerHeight - 50);
+      noBtn.style.left = x + "px";
+      noBtn.style.top = y + "px";
+    }
 
-  // start typewriter once when you go to screen 2
-  if (!typingStarted) {
-    typingStarted = true;
-    typePoem();
-  }
-}
+    function animateHappinessMeter(callback) {
+      const fill = document.getElementById("meterFill");
+      const emoji = document.getElementById("meterEmoji");
+      if (!fill || !emoji) return;
 
-const poemText = `I always had dreams
+      // reset (in case you revisit screen 2)
+      fill.style.width = "0%";
+      emoji.style.left = "0%";
+
+      // kick animation on next frame so transitions apply
+      requestAnimationFrame(() => {
+        fill.style.width = "100%";
+        emoji.style.left = "100%";
+      });
+
+      // wait for meter animation to complete, then start poem
+      setTimeout(() => {
+        if (callback) callback();
+      }, 1300); // slightly longer than CSS transition (1.2s)
+    }
+
+    function goNext() {
+      document.getElementById("screen1").classList.remove("active");
+      document.getElementById("screen2").classList.add("active");
+
+      animateHappinessMeter(() => {
+        if (!typingStarted) {
+          typingStarted = true;
+          typePoem();
+        }
+      });
+    }
+
+    const poemText = `I always had dreams
 about the kind of person I would love.
 
 I found pieces of them
 in the 2D anime characters I crushed on,
 in the 3D K-drama leads I kept falling for.
 
-But I never could have dreamed
+But I never could have dreamt
 that I would find someone
 even better than all of them combined.
 
@@ -144,27 +230,27 @@ my beloved Telugu Uncle—
 
 Happy Valentine’s Day. ❤️`;
 
-let poemIndex = 0;
-let typingStarted = false;
+    let poemIndex = 0;
+    let typingStarted = false;
 
-function typePoem() {
-  const poemEl = document.getElementById("poem");
-  if (!poemEl) return;
+    function typePoem() {
+      const poemEl = document.getElementById("poem");
+      if (!poemEl) return;
 
-  // reset in case you revisit screen 2
-  poemEl.textContent = "";
-  poemIndex = 0;
+      // reset in case you revisit screen 2
+      poemEl.textContent = "";
+      poemIndex = 0;
 
-  const speedMs = 70; // change to 50 slower
+      const speedMs = 70; // lower = faster
 
-  const timer = setInterval(() => {
-    poemEl.textContent += poemText.charAt(poemIndex);
-    poemIndex++;
+      const timer = setInterval(() => {
+        poemEl.textContent += poemText.charAt(poemIndex);
+        poemIndex++;
 
-    if (poemIndex >= poemText.length) clearInterval(timer);
-  }, speedMs);
-}
-</script>
+        if (poemIndex >= poemText.length) clearInterval(timer);
+      }, speedMs);
+    }
+  </script>
 
 </body>
 </html>
