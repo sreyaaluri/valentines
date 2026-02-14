@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Valentine 💕</title>
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&display=swap" rel="stylesheet">
+<style>
+  body {
+    margin: 0;
+    font-family: "Comic Sans MS", cursive;
+    background: #ffd6e7;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    text-align: center;
+    overflow: auto;
+  }
+
+  .container {
+    padding: 20px;
+  }
+
+  h1 {
+    color: #ff4d88;
+    font-size: 28px;
+  }
+
+  img {
+    width: 160px;
+    margin: 20px 0;
+  }
+
+  button {
+    padding: 12px 24px;
+    margin: 10px;
+    font-size: 18px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+
+  .yes {
+    background: #ff4d88;
+    color: white;
+  }
+
+  .no {
+    background: white;
+    color: #ff4d88;
+    position: relative;
+  }
+
+  .screen {
+    display: none;
+  }
+
+  .screen.active {
+    display: block;
+  }
+
+  .active {
+    display: block;
+  }
+
+  #poem {
+    font-family: "Special Elite", monospace;
+  }
+</style>
+</head>
+
+<body>
+
+<!-- SCREEN 1 -->
+<div class="container screen active" id="screen1">
+  <h1>Will you be my Valentine? 💕</h1>
+
+  <!-- teddy -->
+  <img src="https://cdn-icons-png.flaticon.com/512/616/616408.png">
+
+  <div>
+    <button class="yes" onclick="goNext()">Yes 💖</button>
+    <button class="no" id="noBtn">No 😤</button>
+  </div>
+</div>
+
+<!-- SCREEN 2 -->
+<!-- SCREEN 2 -->
+<div class="container screen" id="screen2">
+  <h1>YAYYYYY 🥰💕</h1>
+  <p>You have no idea how happy you just made me 💖</p>
+
+  <!-- Typewriter poem (edit this text later) -->
+  <p id="poem" style="margin-top:16px; color:#b2184a; font-size:18px; line-height:1.5; white-space:pre-wrap;"></p>
+</div>
+
+
+<script>
+const noBtn = document.getElementById("noBtn");
+
+noBtn.addEventListener("click", moveButton);
+
+function moveButton() {
+  noBtn.style.position = "absolute";
+
+  const x = Math.random() * (window.innerWidth - 100);
+  const y = Math.random() * (window.innerHeight - 50);
+  noBtn.style.left = x + "px";
+  noBtn.style.top = y + "px";
+}
+
+function goNext() {
+  document.getElementById("screen1").classList.remove("active");
+  document.getElementById("screen2").classList.add("active");
+
+  // start typewriter once when you go to screen 2
+  if (!typingStarted) {
+    typingStarted = true;
+    typePoem();
+  }
+}
+
+const poemText = `I always had dreams
+about the kind of person I would love.
+
+I found pieces of them
+in the 2D anime characters I crushed on,
+in the 3D K-drama leads I kept falling for.
+
+But I never could have dreamed
+that I would find someone
+even better than all of them combined.
+
+My dearest Cheese Master,
+my beloved Telugu Uncle—
+
+Happy Valentine’s Day. ❤️`;
+
+let poemIndex = 0;
+let typingStarted = false;
+
+function typePoem() {
+  const poemEl = document.getElementById("poem");
+  if (!poemEl) return;
+
+  // reset in case you revisit screen 2
+  poemEl.textContent = "";
+  poemIndex = 0;
+
+  const speedMs = 70; // change to 50 slower
+
+  const timer = setInterval(() => {
+    poemEl.textContent += poemText.charAt(poemIndex);
+    poemIndex++;
+
+    if (poemIndex >= poemText.length) clearInterval(timer);
+  }, speedMs);
+}
+
+
+
+</script>
+
+</body>
+</html>
